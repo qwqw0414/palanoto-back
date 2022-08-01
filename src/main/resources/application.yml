@@ -11,6 +11,16 @@ spring:
   profiles:
     active: local
 
+#Encoding
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# ANSI
+  output.ansi.enabled: always
+
 # Import Config
   config:
     import: classpath:/palanoto.yml
@@ -31,6 +41,17 @@ spring:
         show_sql: true
         format_sql: true
 
+# Logging
+logging:
+  level:
+    root: error
+    com.joje.palanoto: debug
+
+# JWT
+jwt:
+  header: Authorization
+  secret: bWUtaHllb25pYy1teS1wbGktbWUtaHllb25pYy1teS1wbGktbWUtaHllb25pYy1teS1wbGktbWUtaHllb25pYy1teS1wbGk=
+  token-validity-in-seconds: 1800
 
 ---
 # Local

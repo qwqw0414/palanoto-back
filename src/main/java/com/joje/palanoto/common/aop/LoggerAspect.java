@@ -15,8 +15,8 @@ public class LoggerAspect {
 
     private static final int IGNORE_SIZE = "com.joje.palanoto.".length();
 
-//	@Pointcut("execution(* com.joje.palanoto..*.*(..))")
-    @Pointcut("execution(* com.joje.palanoto..*.*(..)) && !execution(* com.joje.palanoto.common..*.*(..))")
+	@Pointcut("execution(* com.joje.palanoto..*.*(..))")
+//    @Pointcut("execution(* com.joje.palanoto..*.*(..)) && !execution(* com.joje.palanoto.common..*.*(..))")
     public void pointcut() {}
 
     @Around("pointcut()")

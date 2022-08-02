@@ -8,4 +8,6 @@ public interface AccountService {
     boolean userIdDuplicateCheck(String userId);
 
     UserDto signup(SignupDto param);
+
+    UserDto getUser(String userId);
 }

@@ -53,10 +53,14 @@ public class AccountServiceImpl implements AccountService {
                                     .roles(roles)
                                     .build();
 
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        log.debug("[userDto]=[{}]", userDto);
+        user = userRepository.save(user);
 
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    @Override
+    public UserDto getUser(String userId) {
+        return modelMapper.map(userRepository.findByUserId(userId).get(), UserDto.class);
     }
 }
 

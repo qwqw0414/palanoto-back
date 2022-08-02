@@ -1,5 +1,6 @@
 package com.joje.palanoto.model.vo;
 
+import com.joje.palanoto.common.constants.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class ResultVo {
 
-    Map<String, Object> data = new HashMap<>();
+    private String code = StatusType.SUCCESS.getCode();
+    private String message = StatusType.SUCCESS.getMessage();
+    private Boolean status = true;
+    private Map<String, Object> data = new HashMap<>();
+
+    public ResultVo(StatusType statusType) {
+        this.code = statusType.getCode();
+        this.message = statusType.getMessage();
+        this.status = StatusType.SUCCESS.equals(statusType);
+    }
 
     public void put(String key, Object value) {
         log.debug("[{}]=[{}]", key, value);

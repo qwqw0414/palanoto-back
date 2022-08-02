@@ -1,12 +1,13 @@
 package com.joje.palanoto.controller;
 
 import com.joje.palanoto.common.constants.StatusType;
-import com.joje.palanoto.exception.AccessDeniedException;
+import com.joje.palanoto.exception.UnauthorizedException;
 import com.joje.palanoto.model.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,6 +34,18 @@ public class ErrorHandlerController {
         return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
+    /**
+     * 사용자 인증 실패
+     */
+    @ExceptionHandler(value = { UnauthorizedException.class })
+    public ResponseEntity<ResultVo> unauthorizedExceptionHandler(UnauthorizedException e) {
+        ResultVo resultVo = new ResultVo(StatusType.UNAUTHORIZED);
+        return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * 권한 인증 실패
+     */
     @ExceptionHandler(value = { AccessDeniedException.class })
     public ResponseEntity<ResultVo> accessDeniedExceptionHandler(AccessDeniedException e) {
         ResultVo resultVo = new ResultVo(StatusType.FORBIDDEN);

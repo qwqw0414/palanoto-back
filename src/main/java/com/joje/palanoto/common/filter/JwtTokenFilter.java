@@ -1,6 +1,8 @@
 package com.joje.palanoto.common.filter;
 
 import com.joje.palanoto.common.security.JwtTokenProvider;
+import com.joje.palanoto.exception.InvalidTokenException;
+import com.joje.palanoto.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -33,11 +36,18 @@ public class JwtTokenFilter implements Filter {
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        // token 유효성 검증에 통과하면
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt); // 정상 토큰이면 SecurityContext 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+        try {
+            // token 유효성 검증에 통과하면
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Authentication authentication = tokenProvider.getAuthentication(jwt); // 정상 토큰이면 SecurityContext 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+            }
+        } catch (InvalidTokenException e) {
+            log.info(e.getMessage());
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.sendError(401);
+            return;
         }
 
         chain.doFilter(request, response);

@@ -1,0 +1,6 @@
+palanoto:
+  musicpedia:
+    uri:
+      chart: https://www.melon.com/chart/index.htm
+      search: https://www.melon.com/search/total/index.htm?q=
+      detail: https://www.melon.com/song/detail.htm?songId=

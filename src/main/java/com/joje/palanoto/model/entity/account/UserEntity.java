@@ -1,7 +1,6 @@
-package com.joje.palanoto.model.entity;
+package com.joje.palanoto.model.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;

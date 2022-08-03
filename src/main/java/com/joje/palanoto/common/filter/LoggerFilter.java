@@ -39,8 +39,6 @@ public class LoggerFilter implements Filter {
         } else {
             chain.doFilter(request, response);
         }
-
-//        response.setContentType("application/json; charset=utf8");
         log.debug("=================== << {} END {} << ===================\n", method, uri);
     }
 }

@@ -1,7 +1,7 @@
 package com.joje.palanoto.service.impl;
 
-import com.joje.palanoto.model.entity.RoleEntity;
-import com.joje.palanoto.model.entity.UserEntity;
+import com.joje.palanoto.model.entity.account.RoleEntity;
+import com.joje.palanoto.model.entity.account.UserEntity;
 import com.joje.palanoto.repository.account.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

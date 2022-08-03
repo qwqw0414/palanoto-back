@@ -2,6 +2,7 @@ package com.joje.palanoto.controller;
 
 import com.joje.palanoto.common.constants.StatusType;
 import com.joje.palanoto.exception.ExpiredTokenException;
+import com.joje.palanoto.exception.HttpRequestException;
 import com.joje.palanoto.exception.InvalidTokenException;
 import com.joje.palanoto.exception.UnauthorizedException;
 import com.joje.palanoto.model.vo.ResultVo;
@@ -26,6 +27,16 @@ public class ErrorHandlerController {
         HTTP_HEADERS.add("Content-Type", "application/json;charset=UTF-8");
     }
 
+
+    /**
+     * Http 요청 실패
+     */
+    @ExceptionHandler(value = { HttpRequestException.class })
+    public ResponseEntity<ResultVo> httpRequestExceptionHandler(HttpRequestException e) {
+        log.error(e.getMessage());
+        ResultVo resultVo = new ResultVo(StatusType.HTTP_REQUEST_FAILED);
+        return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     /**
      * 올바르지 않은 메소드 타입

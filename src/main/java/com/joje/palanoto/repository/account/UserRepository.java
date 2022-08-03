@@ -1,6 +1,6 @@
 package com.joje.palanoto.repository.account;
 
-import com.joje.palanoto.model.entity.UserEntity;
+import com.joje.palanoto.model.entity.account.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

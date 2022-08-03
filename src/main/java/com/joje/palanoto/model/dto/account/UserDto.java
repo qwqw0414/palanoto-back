@@ -1,7 +1,7 @@
 package com.joje.palanoto.model.dto.account;
 
 import com.joje.palanoto.common.constants.RoleType;
-import com.joje.palanoto.model.entity.RoleEntity;
+import com.joje.palanoto.model.entity.account.RoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

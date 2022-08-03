@@ -1,4 +1,4 @@
-package com.joje.palanoto.model.entity;
+package com.joje.palanoto.model.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.joje.palanoto.common.constants.RoleType;

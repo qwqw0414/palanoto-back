@@ -1,7 +1,6 @@
 package com.joje.palanoto.exception;
 
 public class InvalidTokenException extends RuntimeException {
-
     public InvalidTokenException() {}
     public InvalidTokenException(String message) {
         super(message);
@@ -9,5 +8,4 @@ public class InvalidTokenException extends RuntimeException {
     public InvalidTokenException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

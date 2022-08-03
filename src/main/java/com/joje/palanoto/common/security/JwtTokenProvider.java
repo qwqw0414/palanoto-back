@@ -1,5 +1,6 @@
 package com.joje.palanoto.common.security;
 
+import com.joje.palanoto.exception.ExpiredTokenException;
 import com.joje.palanoto.exception.InvalidTokenException;
 import com.joje.palanoto.exception.UnauthorizedException;
 import io.jsonwebtoken.*;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
@@ -94,17 +96,29 @@ public class JwtTokenProvider implements InitializingBean {
     public boolean validateToken(String token) {
         try {
             // 토큰을 파싱해보고 발생하는 exception들을 캐치, 문제가 생기면 false, 정상이면 true를 return
+//            log.debug("[token]=[{}]", token);
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new InvalidTokenException("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            throw new InvalidTokenException("만료된 JWT 토큰입니다.");
+            throw new ExpiredTokenException("만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
             throw new InvalidTokenException("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
             throw new InvalidTokenException("JWT 토큰이 잘못되었습니다.");
         }
+    }
+
+    /**
+     * request header에서 토큰 정보를 꺼내오는 메소드
+     */
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
     public long getUserNo(HttpServletRequest request) {

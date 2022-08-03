@@ -1,7 +1,9 @@
 package com.joje.palanoto.common.config;
 
 import com.joje.palanoto.common.filter.JwtTokenFilter;
+import com.joje.palanoto.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

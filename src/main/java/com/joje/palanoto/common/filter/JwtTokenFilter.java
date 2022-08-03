@@ -1,8 +1,6 @@
 package com.joje.palanoto.common.filter;
 
 import com.joje.palanoto.common.security.JwtTokenProvider;
-import com.joje.palanoto.exception.InvalidTokenException;
-import com.joje.palanoto.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -12,7 +10,6 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -29,37 +26,23 @@ public class JwtTokenFilter implements Filter {
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         // request에서 jwt 토큰 정보 추출
-        String jwt = resolveToken(httpServletRequest);
+        String jwt = tokenProvider.resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        try {
+        try{
             // token 유효성 검증에 통과하면
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt); // 정상 토큰이면 SecurityContext 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+//                log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
             }
-        } catch (InvalidTokenException e) {
-            log.info(e.getMessage());
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.sendError(401);
-            return;
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
 
         chain.doFilter(request, response);
     }
-
-    // request header에서 토큰 정보를 꺼내오는 메소드
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JwtTokenProvider.AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
 }

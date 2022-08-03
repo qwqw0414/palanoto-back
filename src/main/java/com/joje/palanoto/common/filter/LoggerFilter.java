@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-@Order(value = 0)
+@Order(value = 1)
 @WebFilter(urlPatterns = "/palanoto/*")
 public class LoggerFilter implements Filter {
 

@@ -1,6 +1,8 @@
 package com.joje.palanoto.controller;
 
 import com.joje.palanoto.common.constants.StatusType;
+import com.joje.palanoto.exception.ExpiredTokenException;
+import com.joje.palanoto.exception.InvalidTokenException;
 import com.joje.palanoto.exception.UnauthorizedException;
 import com.joje.palanoto.model.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,16 @@ public class ErrorHandlerController {
     @ExceptionHandler(value = { UnauthorizedException.class })
     public ResponseEntity<ResultVo> unauthorizedExceptionHandler(UnauthorizedException e) {
         ResultVo resultVo = new ResultVo(StatusType.UNAUTHORIZED);
+        return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(value = { InvalidTokenException.class })
+    public ResponseEntity<ResultVo> unauthorizedExceptionHandler(InvalidTokenException e) {
+        ResultVo resultVo = new ResultVo(StatusType.INVALID_TOKEN);
+        return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(value = { ExpiredTokenException.class })
+    public ResponseEntity<ResultVo> unauthorizedExceptionHandler(ExpiredTokenException e) {
+        ResultVo resultVo = new ResultVo(StatusType.EXPIRED_TOKEN);
         return new ResponseEntity<>(resultVo, HTTP_HEADERS, HttpStatus.UNAUTHORIZED);
     }
 

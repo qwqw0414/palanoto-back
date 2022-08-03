@@ -1,7 +1,6 @@
 package com.joje.palanoto.exception;
 
 public class AccessDeniedException extends RuntimeException {
-
     public AccessDeniedException() {}
     public AccessDeniedException(String message) {
         super(message);
@@ -9,5 +8,4 @@ public class AccessDeniedException extends RuntimeException {
     public AccessDeniedException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

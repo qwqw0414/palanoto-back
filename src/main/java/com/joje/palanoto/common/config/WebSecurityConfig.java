@@ -55,8 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     public AccessDecisionVoter<? extends Object> roleVoter(){
-        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
-        return roleHierarchyVoter;
+//        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
+//        return roleHierarchyVoter;
+        return new RoleHierarchyVoter(roleHierarchy());
     }
 
     /**

@@ -5,8 +5,8 @@ import com.joje.palanoto.exception.InvalidTokenException;
 import com.joje.palanoto.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,14 +26,11 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
-        try {
-            tokenProvider.validateToken(request.getHeader(JwtTokenProvider.AUTHORIZATION_HEADER));
-        } catch (InvalidTokenException e) {
-            e.printStackTrace();
-            throw new UnauthorizedException();
-        } catch (NullPointerException e){
-            log.debug("[token]=[{}]", request.getHeader(JwtTokenProvider.AUTHORIZATION_HEADER));
-            e.printStackTrace();
+
+        String jwt = tokenProvider.resolveToken(request);
+
+        if(StringUtils.hasText(jwt)){
+            tokenProvider.validateToken(jwt);
         }
 
         return HandlerInterceptor.super.preHandle(request, response, handler);

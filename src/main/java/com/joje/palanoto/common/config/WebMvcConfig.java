@@ -1,7 +1,6 @@
 package com.joje.palanoto.common.config;
 
 import com.joje.palanoto.common.interceptor.CommonInterceptor;
-import com.joje.palanoto.common.interceptor.JwtTokenInterceptor;
 import com.joje.palanoto.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new CommonInterceptor()).addPathPatterns("/**");
-		registry.addInterceptor(new JwtTokenInterceptor(tokenProvider)).addPathPatterns("/**").excludePathPatterns("/palanoto/account/login");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 }

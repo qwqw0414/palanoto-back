@@ -81,13 +81,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-//         	권한 설정
+                .and()
+                .formLogin().disable()
+                .headers().frameOptions().disable()
+
+//         	권한 인증
                 .and()
                 .authorizeRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정
                 .antMatchers("/palanoto/user/**").hasRole("USER")
                 .antMatchers("/palanoto/admin/**").hasRole("ADMIN")
                 .antMatchers("/palanoto/root/**").hasRole("ROOT")
-                .anyRequest().permitAll() // 나머지는 접근 허용
+//          그 외 요청은 인증을 하지 않음.
+                .anyRequest().permitAll()
 
 //          JwtSecurityConfig 클래스 적용
                 .and()

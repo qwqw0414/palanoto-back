@@ -1,5 +1,6 @@
 package com.joje.palanoto.common.config;
 
+import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -12,4 +13,6 @@ public class AppConfig {
         return new ModelMapper();
     }
 
+    @Bean
+    public Gson gson() {return new Gson();}
 }

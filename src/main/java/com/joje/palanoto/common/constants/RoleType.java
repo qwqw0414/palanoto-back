@@ -11,5 +11,5 @@ public enum RoleType {
     ROLE_ADMIN(2),
     ROLE_USER(3);
 
-    private long roleId;
+    private final long roleId;
 }

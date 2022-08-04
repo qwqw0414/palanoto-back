@@ -1,4 +1,4 @@
-package com.joje.palanoto.repository.account;
+package com.joje.palanoto.repository.musicpedia;
 
 import com.joje.palanoto.model.entity.musicpedia.RankEntity;
 import com.joje.palanoto.model.entity.musicpedia.RankKey;

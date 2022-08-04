@@ -1,15 +1,15 @@
 package com.joje.palanoto.service.impl;
 
+import com.joje.palanoto.common.constants.PoSType;
 import com.joje.palanoto.component.HttpRequestComponent;
+import com.joje.palanoto.component.NluComponent;
 import com.joje.palanoto.model.dto.musicpedia.RankDto;
 import com.joje.palanoto.model.dto.musicpedia.SongDto;
-import com.joje.palanoto.model.entity.musicpedia.ArtistEntity;
-import com.joje.palanoto.model.entity.musicpedia.RankEntity;
-import com.joje.palanoto.model.entity.musicpedia.RankKey;
-import com.joje.palanoto.model.entity.musicpedia.SongEntity;
-import com.joje.palanoto.repository.account.RankRepository;
+import com.joje.palanoto.model.entity.musicpedia.*;
+import com.joje.palanoto.repository.musicpedia.RankRepository;
 import com.joje.palanoto.repository.musicpedia.ArtistRepository;
 import com.joje.palanoto.repository.musicpedia.SongRepository;
+import com.joje.palanoto.repository.musicpedia.WordRepository;
 import com.joje.palanoto.service.MusicpediaService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
@@ -20,10 +20,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.lang.annotation.ElementType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,13 @@ public class MusicpediaServiceImpl implements MusicpediaService {
     private RankRepository rankRepository;
 
     @Autowired
+    private WordRepository wordRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private NluComponent nluComponent;
 
     @Autowired
     private HttpRequestComponent httpRequestComponent;
@@ -82,7 +86,7 @@ public class MusicpediaServiceImpl implements MusicpediaService {
         }
 
         Elements a = tables.eq(0).select("td.t_left a");
-        log.debug("[a]=[{}]", a);
+//        log.debug("[a]=[{}]", a);
 
 //        href에서 아이디값 조회
         if(a.html().length() > 0) {
@@ -178,6 +182,19 @@ public class MusicpediaServiceImpl implements MusicpediaService {
                 artist
         );
         song = songRepository.save(song);
+
+//        단어 저장
+        List<String> rawWords = nluComponent.get(song.getLyrics(), PoSType.NNG);
+
+        for(String w : rawWords){
+            WordEntity wordEntity = wordRepository.findById(w).orElse(null);
+            if (wordEntity == null) {
+                wordEntity = new WordEntity(w, 1L, null);
+            } else {
+                wordEntity.setAmount(wordEntity.getAmount() + 1);
+            }
+            wordRepository.save(wordEntity);
+        }
 
         return modelMapper.map(song, SongDto.class);
     }

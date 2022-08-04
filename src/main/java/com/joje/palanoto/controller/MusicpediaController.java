@@ -1,5 +1,6 @@
 package com.joje.palanoto.controller;
 
+import com.joje.palanoto.component.NluComponent;
 import com.joje.palanoto.model.dto.musicpedia.RankDto;
 import com.joje.palanoto.model.dto.musicpedia.SongDto;
 import com.joje.palanoto.model.vo.ResultVo;

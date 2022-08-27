@@ -26,7 +26,7 @@ public class NluComponent {
         for(Token token : tokens){
             if(token.getPos().startsWith(type.toString())) {
                 if(!"에".equals(token.getMorph())){
-                    log.debug("[token]=[{}]", token);
+//                    log.debug("[token]=[{}]", token);
                     result.add(token.getMorph());
                 }
             }

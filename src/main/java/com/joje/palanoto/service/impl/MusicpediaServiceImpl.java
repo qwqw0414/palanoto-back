@@ -16,6 +16,7 @@ import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -162,8 +163,13 @@ public class MusicpediaServiceImpl implements MusicpediaService {
     }
 
     @Override
+    public int countSongById(String songId) {
+        return songRepository.countBySongId(songId);
+    }
+
+    @Override
     @Transactional
-    public SongDto insertSong(String songId) {
+    public SongDto insertSong(String songId) throws MappingException {
 
         Document html = httpRequestComponent.requestHtml(DETAIL_URI + songId);
 
@@ -196,6 +202,7 @@ public class MusicpediaServiceImpl implements MusicpediaService {
             wordRepository.save(wordEntity);
         }
 
+        log.info("Musicpedia Add Song [{} - {}]", song.getArtist().getArtistName(), song.getSongName());
         return modelMapper.map(song, SongDto.class);
     }
 

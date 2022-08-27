@@ -18,4 +18,6 @@ public interface MusicpediaService {
     int insertSong(List<RankDto> songId);
 
     List<RankDto> getRanksFromChart();
+
+    int countSongById(String songId);
 }
